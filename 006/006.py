@@ -1,6 +1,11 @@
-nameList = []                                                            # Init list to hold names
-def ifReplacement(u): return {"o": nameList, "r": reversed(nameList)}[u] # Basically look up user input in dictionary, errors if not found and prints results if found.
-while True:                                                                 # ^- I could have used an if elif etc but that takes up too many lines.
-    userInput = input(">")
-    try: print(list(ifReplacement(userInput)))
-    except: nameList += [userInput]
+numList,minNumber,maxNumber = ([],0,0)                      # Init list to hold nums, min and max            
+userInput = int(input(">"))
+numList += [userInput]
+minNumber,maxNumber = (userInput, userInput)
+while True:
+    userInput = int(input(">"))
+    numlist += [userInput]
+    for num in numlist:
+        if num > maxNumber: maxNumber = num
+        if num < minNumber: minNumber = num
+    print("Min: {}, Max: {}".format(minNumber, maxNumber))
