@@ -5,7 +5,16 @@ def randomNameGen():
     part2 = ["bald", "ban", "buck", "tor", "van", "gax", "trandor", "thuri", "ben", "baldar", "may", "lam", "mor", "dard", "burg", "whit"]
     part3 = ["Ard", "Alf", "Fiz", "Risa", "Warran", "Kel", "Wren", "Kan", "Can", "Gy", "Dero", "Ak", "Dall", "Dell", "Mil", "Ward"]
     return random.choice(part1) + random.choice(part2) + "-" + random.choice(part3)
-
+def bar(stat, maximum, label):
+    templateForLabel = list("            :")
+    for key, letter in enumerate(label): templateForLabel[key] = letter
+    templateForBar = "["
+    for i in range(1, maximum+1): templateForBar += " "
+    templateForBar += "]"
+    templateForBar = list(templateForBar)
+    for key in range(stat): templateForBar[key + 1] = "~"
+    final = ''.join(templateForLabel) + " " + ''.join(templateForBar)
+    return final
 random.seed(strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 possibilities = {
     "rpgClass": ["Elf", "Dwarf", "Human", "Zombie", "Spirit"],
@@ -16,11 +25,11 @@ possibilities = {
     "possibleExtras": [["diorreah", -5], ["super eyesight", 5], ["super speed", 6], ["psycic powers", 10], ["a headache", -3], ["dyspraxia", -4]] # In format [Name, Change to overall power]
 }
 class Character:
-    def __init__(self, characterClass = random.choice(possibilities["rpgClass"]), characterGender = random.choice(possibilities["gender"]), rpgName = randomNameGen()):
+    def __init__(self, rpgName = randomNameGen()):
         assert characterClass in possibilities["rpgClass"]
         assert characterGender in possibilities["gender"]
-        self.rpgClass = characterClass
-        self.gender = characterGender
+        self.rpgClass = random.choice(possibilities["rpgClass"]
+        self.gender = random.choice(possibilities["gender"])
         self.strength = random.choice(possibilities["strength"][self.rpgClass])
         self.magic = random.choice(possibilities["magic"][self.rpgClass])
         self.dexterity = random.choice(possibilities["dexterity"][self.rpgClass])
@@ -47,4 +56,19 @@ class Character:
             "extra": self.extra,
             "overallPoints": self.calculateOverallPoints()}
         return jsonBuild
-    def 
+    def save(self, fileName):
+        with open(fileName, "w") as f:
+            f.write(self.outputJson())
+    def prettyPrint(self):
+        finalOutput = """
+~~~ RPG Character Generator V1 ~~~
+
+Your character is called {}, and has {}.
+They identify as a(n) {} {}.
+Their overall power is {}.
+Their stats are:
+{}
+{}
+{}
+""".format(self.name, self.extra[0], self.rpgClass, self.gender, self.calculateOverallPoints(), bar(self.magic, 10, "Magic"), bar(self.dexterity, 10, "Dexterity"), bar(self.strength, 10, "Strength"))
+        return finalOutput
