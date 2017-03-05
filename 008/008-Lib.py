@@ -28,7 +28,7 @@ class Character:
     def __init__(self, rpgName = randomNameGen()):
         assert characterClass in possibilities["rpgClass"]
         assert characterGender in possibilities["gender"]
-        self.rpgClass = random.choice(possibilities["rpgClass"]
+        self.rpgClass = random.choice(possibilities["rpgClass"])
         self.gender = random.choice(possibilities["gender"])
         self.strength = random.choice(possibilities["strength"][self.rpgClass])
         self.magic = random.choice(possibilities["magic"][self.rpgClass])
