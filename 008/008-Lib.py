@@ -5,6 +5,7 @@ def randomNameGen():
     part2 = ["bald", "ban", "buck", "tor", "van", "gax", "trandor", "thuri", "ben", "baldar", "may", "lam", "mor", "dard", "burg", "whit"]
     part3 = ["Ard", "Alf", "Fiz", "Risa", "Warran", "Kel", "Wren", "Kan", "Can", "Gy", "Dero", "Ak", "Dall", "Dell", "Mil", "Ward"]
     return random.choice(part1) + random.choice(part2) + "-" + random.choice(part3)
+
 random.seed(strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 possibilities = {
     "rpgClass": ["Elf", "Dwarf", "Human", "Zombie", "Spirit"],
@@ -15,7 +16,7 @@ possibilities = {
     "possibleExtras": [["diorreah", -5], ["super eyesight", 5], ["super speed", 6], ["psycic powers", 10], ["a headache", -3], ["dyspraxia", -4]] # In format [Name, Change to overall power]
 }
 class Character:
-    def __init__(self, characterClass = random.choice(possibilities["rpgClass"]), characterGender = random.choice(possibilities["gender"])):
+    def __init__(self, characterClass = random.choice(possibilities["rpgClass"]), characterGender = random.choice(possibilities["gender"]), rpgName = randomNameGen()):
         assert characterClass in possibilities["rpgClass"]
         assert characterGender in possibilities["gender"]
         self.rpgClass = characterClass
@@ -24,6 +25,7 @@ class Character:
         self.magic = random.choice(possibilities["magic"][self.rpgClass])
         self.dexterity = random.choice(possibilities["dexterity"][self.rpgClass])
         self.extra = random.choice(possibilities["possibleExtras"])
+        self.name = rpgName
         if self.calculateOverallPoints() <= 4: self.level = "Junior"
         elif self.calculateOverallPoints() <= 12: self.level = "1"
         elif self.calculateOverallPoints() <= 20: self.level = "2"
@@ -32,5 +34,17 @@ class Character:
     def calculateOverallPoints(self):
         return self.strength + self.magic + self.dexterity + self.extra[1]
     def outputJson(self):
-        # Model:
-        pass
+        # Model: {"name":"gender": "Male", "class": "Elf", "stats": {"magic": 6 etc}, "extra": ["super eyesight", 5], "overallPoints": 20}
+        jsonBuild = {
+            "name": self.name,
+            "gender": self.gender,
+            "class": self.rpgClass,
+            "stats": {
+                "magic": self.magic,
+                "strength": self.strength,
+                "dexterity": self.dexterity
+                },
+            "extra": self.extra,
+            "overallPoints": self.calculateOverallPoints()}
+        return jsonBuild
+    def 
