@@ -1,0 +1,19 @@
+{
+    init: function(elevators, floors) {
+        var elevator = elevators[0]; // Let's use the first elevator
+
+        // Whenever the elevator is idle (has no more queued destinations) ...
+        elevator.on("idle", function() {
+            a = elevator.getPressedFloors();
+            if(a.length == 0){
+                elevator.goToFloor(3);
+            }
+            for(i = 0; i < a.length; i++){
+                elevator.goToFloor(a[i]);
+            }
+        });
+    },
+    update: function(dt, elevators, floors) {
+        // We normally don't need to do anything here
+    }
+}

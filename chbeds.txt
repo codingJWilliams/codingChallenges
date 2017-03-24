@@ -1,0 +1,42 @@
+
+{
+    init: function(elevators, floors) {
+        var elevator = elevators[0]; // Let's use the first elevator
+        elevator.goingDownIndicator(false);
+        // Whenever the elevator is idle (has no more queued destinations) ...
+        elevator.on("idle", function() {
+            /*for(i = 0; i < 8; i++){
+                elevator.goToFloor(i);
+            }*/
+            if(elevator.getPressedFloors().length > 0) {
+                for(i=0; i<elevator.getPressedFloors().length; i++){
+                    elevator.goToFloor(elevator.getPressedFloors()[i]);
+                }
+            }else if(elevator.getPressedFloors().length == 0){
+                elevator.goToFloor(0);
+            }
+        });
+        
+        
+        var elevator1 = elevators[1]; // Let's use the first elevator
+        elevator1.goingUpIndicator(false);
+        // Whenever the elevator is idle (has no more queued destinations) ...
+        elevator1.goToFloor(7);
+        elevator1.on("idle", function() {
+            /*for(i = 0; i < 8; i++){
+                elevator.goToFloor(i);
+            }*/
+            if(elevator1.getPressedFloors().length > 0) {
+                for(i=0; i<elevator1.getPressedFloors().length; i++){
+                    elevator1.goToFloor(elevator1.getPressedFloors()[i]);
+                }
+            }else if(elevator1.getPressedFloors().length == 0){
+                elevator1.goToFloor(7);
+            }
+        });
+        
+    },
+    update: function(dt, elevators, floors) {
+        // We normally don't need to do anything here
+    }
+}
